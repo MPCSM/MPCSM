@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+   
+    wafer-auto:
+      image: waferpytorch:latest
+      container_name: wafer-auto
+      cpuset: ${autoCpu}
+      #mem_limit: 70MB
+      volumes:
+        - ${autoVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 auto.py wafer-cnn ${autoPubIp} wafer-auto ${autoSubIp}

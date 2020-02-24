@@ -1,0 +1,18 @@
+version: '2.2'
+services:
+
+    fault-source:
+      image: sourceschedule:latest
+      container_name: fault-source
+      #cpuset: 2,3
+      #mem_limit: 70MB
+      volumes:
+        - /home/pi/code/fault/source:/exp
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 source.py
+

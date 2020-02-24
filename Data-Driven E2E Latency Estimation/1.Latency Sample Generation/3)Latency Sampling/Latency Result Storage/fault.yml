@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+
+    fault-collect:
+      image: wafer-collect:latest
+      container_name: fault-collect
+      volumes:
+        - /root/ljr/storeResult/storage:/exp
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 fault.py "39.99.136.63"

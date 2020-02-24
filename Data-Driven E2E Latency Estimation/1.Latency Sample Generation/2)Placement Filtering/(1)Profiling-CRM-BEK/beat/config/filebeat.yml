@@ -1,0 +1,64 @@
+# https://github.com/elastic/beats/blob/master/filebeat/filebeat.reference.yml
+
+# filebeat.modules:
+# - module: system
+#   syslog:
+#     enabled: false
+#   auth:
+#     enabled: false
+# - module: auditd
+#   log:
+#     # Does not look like Auditd is supported in Alpine linux: https://github.com/linuxkit/linuxkit/issues/52
+#     enabled: false
+
+filebeat.inputs:
+- type: docker
+  combine_partial: true
+  json.keys_under_root: true
+  enabled: true
+  containers:
+    stream: all # can be all, stdout or stderr
+    ids:
+      - '*'
+  # exclude_lines: ["^\\s+[\\-`('.|_]"]  # drop asciiart lines
+  # multiline.pattern: "^\t|^[[:space:]]+(at|...)|^Caused by:"
+  # multiline.match: after
+
+#========================== Filebeat autodiscover ==============================
+# See this URL on how to run Apache2 Filebeat module: # https://www.elastic.co/guide/en/beats/filebeat/current/running-on-docker.html
+# filebeat.autodiscover:
+#   providers:
+#     - type: docker
+#       # https://www.elastic.co/guide/en/beats/filebeat/current/configuration-autodiscover-hints.html
+#       # This URL alos contains instructions on multi-line logs
+#       hints.enabled: true
+
+#================================ Processors ===================================
+processors:
+# - add_cloud_metadata: ~
+- add_docker_metadata: ~
+- add_locale:
+    format: offset
+# - add_host_metadata:
+#     netinfo.enabled: true
+- drop_event:
+    when:
+      not:
+        has_fields: ['experiment']
+
+#========================== Elasticsearch output ===============================
+output.elasticsearch:
+  hosts: ["${ELASTICSEARCH_HOST}:9200"]
+
+#============================== Dashboards =====================================
+setup.dashboards:
+  enabled: true
+
+#============================== Kibana =========================================
+setup.kibana:
+  host: "${KIBANA_HOST}:5601"
+
+#============================== Xpack Monitoring ===============================
+xpack.monitoring:
+  enabled: true
+  elasticsearch:

@@ -1,0 +1,1 @@
+All microservices are placed on the Cloud.

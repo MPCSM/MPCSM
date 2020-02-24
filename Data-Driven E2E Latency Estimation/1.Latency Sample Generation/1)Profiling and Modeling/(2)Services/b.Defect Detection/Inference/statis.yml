@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    wafer-statis:
+      image: wafersklearn:latest
+      container_name: wafer-statis
+      cpuset: ${statisCpu}
+      #mem_limit: 70MB
+      volumes:
+        - ${statisVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 statis.py wafer-svm ${statisPubIp} wafer-statis ${statisSubIp}

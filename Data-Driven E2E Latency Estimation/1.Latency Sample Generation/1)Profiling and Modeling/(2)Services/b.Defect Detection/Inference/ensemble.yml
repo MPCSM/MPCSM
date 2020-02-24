@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    wafer-ensemble:
+      image: wafersklearn:latest
+      container_name: wafer-ensemble
+      cpuset: ${ensembleCpu}
+      #mem_limit: 70MB
+      volumes:
+        - ${ensembleVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 ensemble.py 'wafer-ensemble/#' ${ensembleSubIp} ${decision}

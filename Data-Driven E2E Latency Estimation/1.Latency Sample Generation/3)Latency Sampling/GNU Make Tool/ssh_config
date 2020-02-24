@@ -1,0 +1,34 @@
+Host nano
+    HostName 192.168.0.53
+    User nano
+    Port 22
+    
+Host ljr
+    HostName 192.168.0.86
+    User ljr
+    Port 22
+    
+Host minserver
+    HostName 192.168.0.190
+    User zjq
+    Port 22
+Host raspberrywafer 
+    HostName 192.168.0.91
+    User pi
+    Port 22
+Host raspberryrul 
+    HostName 192.168.0.92
+    User pi
+    Port 22
+Host raspberryfault 
+    HostName 192.168.0.111
+    User pi
+    Port 22
+Host cloud
+    HostName 39.100.79.76
+    User root
+    Port 22
+Host wym
+    HostName 192.168.0.135
+    User wym
+    Port 22

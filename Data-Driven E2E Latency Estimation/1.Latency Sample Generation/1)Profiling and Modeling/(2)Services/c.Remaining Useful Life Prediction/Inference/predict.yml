@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    predictive-predictive:
+      image: urlkeras:latest
+      container_name: predict-predict
+      cpuset: ${predictCpu}
+      #mem_limit: 70MB
+      volumes:
+        - ${predictVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 predictive.py 'predictive-predictive' ${predictSubIp} ${decision}

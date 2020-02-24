@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    fault-knn:
+      image: wafersklearn:latest
+      container_name: fault-knn
+      cpuset: ${knnCpu}
+      mem_limit: 67MB
+      volumes:
+        - ${knnVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 knn.py fault-ensemble/knn ${knnPubIp} fault-knn ${knnSubIp}

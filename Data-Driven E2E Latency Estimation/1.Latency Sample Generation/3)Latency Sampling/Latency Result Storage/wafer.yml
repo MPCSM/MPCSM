@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+
+    wafer-collect:
+      image: wafer-collect:latest
+      container_name: wafer-collect
+      volumes:
+        - /root/ljr/storeResult/storage:/exp
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 wafer.py "39.99.136.63"

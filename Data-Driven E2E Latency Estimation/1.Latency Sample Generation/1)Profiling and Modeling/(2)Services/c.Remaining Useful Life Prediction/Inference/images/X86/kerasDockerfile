@@ -1,0 +1,9 @@
+FROM ubuntu:bionic
+ADD sources.list /etc/apt/sources.list
+RUN apt update && \
+  apt install python3 net-tools iputils-ping python3-pip mosquitto nano libglib2.0-dev libsm6 libxrender1 libxext-dev -y  && \
+  pip3 install paho-mqtt pandas numpy matplotlib opencv-python keras tensorflow -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN mkdir /exp
+WORKDIR /exp
+
+

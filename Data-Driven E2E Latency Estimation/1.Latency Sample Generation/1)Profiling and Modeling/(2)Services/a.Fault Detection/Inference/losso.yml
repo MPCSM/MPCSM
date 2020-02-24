@@ -1,0 +1,18 @@
+version: '2.2'
+services:
+
+    fault-losso:
+      image: wafersklearn:latest
+      container_name: fault-losso
+      cpuset: ${lossoCpu}
+      mem_limit: 145MB
+      volumes:
+        - ${lossoVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 losso.py 3 fault-knn ${lossoPubIp1} fault-svm ${lossoPubIp2} fault-xgboost ${lossoPubIp3} fault-losso ${lossoSubIp}
+

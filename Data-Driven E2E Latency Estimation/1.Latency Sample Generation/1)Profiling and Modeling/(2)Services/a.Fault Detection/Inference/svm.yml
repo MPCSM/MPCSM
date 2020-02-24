@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    fault-svm:
+      image: wafersklearn:latest
+      container_name: fault-svm
+      cpuset: ${svmCpu}
+      mem_limit: 64MB
+      volumes:
+        - ${svmVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 svm.py fault-ensemble/svm ${svmPubIp} fault-svm ${svmSubIp}

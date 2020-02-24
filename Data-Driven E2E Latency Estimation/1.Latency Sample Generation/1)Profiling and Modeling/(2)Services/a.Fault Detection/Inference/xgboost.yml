@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    fault-xgboost:
+      image: faultxbg:latest
+      container_name: fault-xgboost
+      cpuset: ${xgboostCpu}
+      mem_limit: 70MB
+      volumes:
+        - ${xgboostVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 xgbo.py fault-ensemble/xgboost ${xgboostPubIp} fault-xgboost ${xgboostSubIp}

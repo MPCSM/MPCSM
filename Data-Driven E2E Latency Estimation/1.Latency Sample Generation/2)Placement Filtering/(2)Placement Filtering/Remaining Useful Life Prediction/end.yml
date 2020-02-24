@@ -1,0 +1,18 @@
+version: '2.2'
+services:
+
+    url-end:
+      image: sourceschedule:latest
+      container_name: url-end
+      #cpuset: 2,3
+      #mem_limit: 70MB
+      volumes:
+        - /home/pi/code/rul/end:/exp
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 source.py ${number} predictive-Preprocessing ${sourceSubIp}
+

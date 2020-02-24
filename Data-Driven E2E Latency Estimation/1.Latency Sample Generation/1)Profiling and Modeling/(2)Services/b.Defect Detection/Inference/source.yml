@@ -1,0 +1,18 @@
+version: '2.2'
+services:
+
+    wafer-source:
+      image: sourceschedule:latest
+      container_name: wafer-source
+      #cpuset: 2,3
+      #mem_limit: 70MB
+      volumes:
+        - /home/pi/code/wafer/source:/exp
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 source.py
+

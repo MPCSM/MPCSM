@@ -1,0 +1,87 @@
+version: "2.4"
+
+services:
+  elasticsearch:
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    volumes:
+      - $PWD/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elastic
+
+  kibana:
+    build:
+      context: kibana/
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    volumes:
+      - $PWD/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+      - kibana:/usr/share/kibana/data
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    build:
+      context: beat/
+      dockerfile: Dockerfile.filebeat
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    user: root
+    restart: on-failure
+    volumes:
+      - $PWD/beat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
+      - /var/log/:/var/log/:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
+      - KIBANA_HOST=${KIBANA_HOST:-kibana}
+    command: ["--strict.perms=false"]
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+      - kibana
+
+  metricbeat:
+    build:
+      context: beat/
+      dockerfile: Dockerfile.metricbeat
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    user: root
+    restart: on-failure
+    volumes:
+      - $PWD/beat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      # - /:/hostfs:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
+      - KIBANA_HOST=${KIBANA_HOST:-kibana}
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+      - kibana
+
+networks:
+  elastic:
+
+volumes:
+  elasticsearch:
+  kibana:

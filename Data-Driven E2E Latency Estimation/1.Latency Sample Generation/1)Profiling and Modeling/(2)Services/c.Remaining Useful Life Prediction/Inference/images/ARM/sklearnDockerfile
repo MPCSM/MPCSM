@@ -1,0 +1,13 @@
+FROM ubuntu:bionic
+ADD sources.list /etc/apt/sources.list
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get clean && \ 
+    apt-get update -o Acquire::http::No-Cache=True && \
+    apt-get upgrade -y && \
+    apt-get install -y python3.6 python3-pip python3-sklearn net-tools nano python3-pandas python3-skimage python3-numpy
+RUN mkdir /exp
+WORKDIR /exp
+
+ 

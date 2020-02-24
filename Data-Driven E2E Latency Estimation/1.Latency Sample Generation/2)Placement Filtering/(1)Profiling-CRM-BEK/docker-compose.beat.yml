@@ -1,0 +1,46 @@
+version: "2.4"
+
+services:
+  filebeat:
+    build:
+      context: beat/
+      dockerfile: Dockerfile.filebeat
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    user: root
+    restart: on-failure
+    volumes:
+      - $PWD/beat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
+      - /var/log/:/var/log/:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
+      - KIBANA_HOST=${KIBANA_HOST:-kibana}
+    command: ["--strict.perms=false"]
+    networks:
+      - elastic
+
+  metricbeat:
+    build:
+      context: beat/
+      dockerfile: Dockerfile.metricbeat
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    user: root
+    restart: on-failure
+    volumes:
+      - $PWD/beat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
+      - KIBANA_HOST=${KIBANA_HOST:-kibana}
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    networks:
+      - elastic
+
+networks:
+  elastic:

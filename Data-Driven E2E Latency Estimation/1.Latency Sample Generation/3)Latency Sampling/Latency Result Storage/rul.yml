@@ -1,0 +1,15 @@
+version: '2.2'
+services:
+
+    rul-collect:
+      image: wafer-collect:latest
+      container_name: rul-collect
+      # cpuset: 5,6
+      volumes:
+        - /root/ljr/storeResult/storage:/exp
+      command:
+        - /bin/sh
+        - -c
+        - |
+          
+          python3 rul.py "39.99.136.63"

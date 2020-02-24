@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    wafer-svm:
+      image: wafersklearn:latest
+      container_name: wafer-svm
+      cpuset: ${svmCpu}
+      #mem_limit: 70MB
+      volumes:
+        - ${svmVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 svm.py wafer-ensemble/svm ${svmPubIp} wafer-svm ${svmSubIp}

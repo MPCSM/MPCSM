@@ -1,0 +1,18 @@
+version: '2.2'
+services:
+
+    wafer-end:
+      image: sourceschedule:latest
+      container_name: wafer-end
+      #cpuset: 2,3
+      #mem_limit: 70MB
+      volumes:
+        - /home/pi/code/wafer/end:/exp
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 source.py ${number} wafer-auto wafer-statis ${sourceSubIp1} ${sourceSubIp2}
+

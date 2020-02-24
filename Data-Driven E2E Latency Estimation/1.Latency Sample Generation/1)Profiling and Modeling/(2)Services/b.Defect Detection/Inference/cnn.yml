@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    wafer-cnn:
+      image: waferpytorch:latest
+      container_name: wafer-cnn
+      cpuset: ${cnnCpu}
+      #mem_limit: 70MB
+      volumes:
+        - ${cnnVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 cnn.py wafer-ensemble/cnn ${cnnPubIp} wafer-cnn ${cnnSubIp}

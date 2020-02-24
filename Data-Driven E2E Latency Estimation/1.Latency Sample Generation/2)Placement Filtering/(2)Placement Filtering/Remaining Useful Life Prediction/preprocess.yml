@@ -1,0 +1,17 @@
+version: '2.2'
+services:
+
+    url-preprocess:
+      image: wafersklearn:latest
+      container_name: url-preprocess
+      cpuset: ${preprocessCpu}
+      #mem_limit: 70MB
+      volumes:
+        - ${preprocessVolumes}
+        - /etc/timezone:/etc/timezone
+        - /etc/localtime:/etc/localtime
+      command:
+        - /bin/sh
+        - -c
+        - |
+          python3 Preprocessing.py predictive-predictive ${preprocessPubIp} predictive-Preprocessing ${preprocessSubIp}

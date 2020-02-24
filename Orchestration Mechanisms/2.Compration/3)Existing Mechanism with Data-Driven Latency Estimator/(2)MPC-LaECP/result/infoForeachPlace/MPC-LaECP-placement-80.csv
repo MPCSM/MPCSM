@@ -1,0 +1,11 @@
+,deviceName,microserviceName
+0,edge1,fault-losso
+1,edge1,wafer-auto
+2,edge1,wafer-static
+3,edge2,fault-knn
+4,edge1,fault-svm
+5,edge2,fault-xgboost
+6,edge2,wafer-cnn
+7,edge0,wafer-svm
+8,edge1,fault-ensemble
+9,cloud,wafer-ensemble
