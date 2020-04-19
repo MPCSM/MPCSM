@@ -1,2 +1,2 @@
-# MOCSM
-MOCSM: Microservice Orchestration for Edge-Cloud Collaborative Smart Manufacturing
+# MPCSM
+MPCSM: Microservice Placement for Edge-Cloud Collaborative Smart Manufacturing
